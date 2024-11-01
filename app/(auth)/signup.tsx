@@ -31,13 +31,15 @@ const SignupScreen = () => {
   const { locations, loadingLocation } = useLocation();
 
   const locationOptions = useMemo(() => {
-    return locations?.map((item) => ({ label: item.name, value: item.name }));
+    return locations?.map((item) => ({
+      label: item.name,
+      value: `${item.id}`,
+    }));
   }, [locations]);
-  console.log(locations);
 
   const onSignupPress = () => {
     console.log(email, role);
-    return;
+
     handleSignup({
       email,
       confirmPassword,
@@ -88,7 +90,13 @@ const SignupScreen = () => {
       />
 
       <Text>Location</Text>
-      <CustomDropdown data={locationOptions} placeholder="Select location" />
+      <CustomDropdown
+        data={locationOptions}
+        placeholder="Select location"
+        onChange={(select) => {
+          setLocationId(select.id);
+        }}
+      />
 
       <TouchableOpacity
         style={{
