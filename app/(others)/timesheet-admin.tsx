@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useCallback, useEffect } from "react";
+import React, { useLayoutEffect, useRef, useCallback } from "react";
 import { Timesheet, AddButton } from "@easyteam/ui";
 import { useRouter, useLocalSearchParams, useNavigation } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
@@ -29,7 +29,6 @@ const TimesheetAdminScreen = () => {
     }
   }, [navigation, ref]);
 
-  // Reload data when screen is focused
   useFocusEffect(
     useCallback(() => {
       if (ref.current) {

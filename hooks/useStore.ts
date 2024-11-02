@@ -1,7 +1,7 @@
 import { Employee, FormattedEmployee, Location } from "@/model";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
-import { createJSONStorage, persist, StateStorage } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 interface StateAction {
   token: any;

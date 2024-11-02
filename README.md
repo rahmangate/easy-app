@@ -15,27 +15,8 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    cd easy-app
    ```
 
-2. **Install dependencies**
 
-   ```bash
-   npm install
-   ```
-
-3. **Install EasyTeam SDK prerequisites**
-
-   - Install `react-native-safe-area-context` and `react-native-url-polyfill`:
-
-     ```bash
-     npm install react-native-safe-area-context react-native-url-polyfill
-     ```
-
-   - Import `react-native-url-polyfill` at the top of your entry-point file to ensure the polyfill is applied automatically:
-
-     ```javascript
-     import 'react-native-url-polyfill/auto';
-     ```
-
-4. **Install EasyTeam SDK components**
+2. ** EasyTeam SDK components**
 
    To integrate EasyTeam front-end components, follow these steps:
 
@@ -48,15 +29,23 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
    - Set up the `NPM_TOKEN` environment variable as provided by the EasyTeam support team.
 
-   - Run the following command to install EasyTeam components:
+3. ** EasyTeam SDK prerequisites**
 
-     ```bash
-     npm install @easyteam/ui
+   - Import `react-native-url-polyfill` at the top of your entry-point file to ensure the polyfill is applied automatically:
+
+     ```javascript
+     import 'react-native-url-polyfill/auto';
      ```
+
+4. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
 
 5. **Add Configuration Variables**
 
-   Add the following required variables in your `config/index.js` file:
+   Add the following required variables in your `config/index.ts` file:
 
    ```javascript
    export const PARTNER_ID = '<YOUR_PARTNER_ID>';
@@ -99,7 +88,7 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 2. **Start the app**
 
    ```bash
-   npx expo start
+   npx expo start -c
    ```
 
 In the output, you'll find options to open the app in a:

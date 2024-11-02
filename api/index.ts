@@ -5,7 +5,6 @@ export const api = axios.create({ baseURL: BASE_API });
 
 api.interceptors.response.use(
   (config) => {
-    // Modify request config if needed
     return config;
   },
   (error) => {
@@ -15,7 +14,6 @@ api.interceptors.response.use(
 
 api.interceptors.request.use(
   (config) => {
-    // Modify request config if needed
     return config;
   },
   (error) => {

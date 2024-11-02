@@ -1,4 +1,3 @@
-// Logger.ts
 type LogLevel = "info" | "warn" | "error" | "debug";
 
 class Logger {
@@ -22,7 +21,6 @@ class Logger {
   }
 
   public static error(message: string, ...optionalParams: unknown[]): void {
-    // In production, this could also send errors to an external monitoring service
     console.error(this.formatMessage("error", message), ...optionalParams);
   }
 

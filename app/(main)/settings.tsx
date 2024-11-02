@@ -30,7 +30,7 @@ const SettingsScreen = () => {
 
   return (
     <Settings
-      onSave={({ employees, isGlobalTrackingEnabled }) => {
+      onSave={({ isGlobalTrackingEnabled }) => {
         updateGlobalTrackingSetting(isGlobalTrackingEnabled);
       }}
     />

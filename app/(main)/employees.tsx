@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { EmployeeListRef, EmployeesTimesheet } from "@easyteam/ui";
 import { useRouter, useLocalSearchParams, useFocusEffect } from "expo-router";
 

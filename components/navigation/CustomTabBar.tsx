@@ -1,7 +1,6 @@
-// app/components/CustomTabBar.js
 import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
-import { useRouter, useSegments } from "expo-router";
+import { useRouter } from "expo-router";
 
 import { useThemeColor } from "@/hooks/useThemeColor";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -9,10 +8,8 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import useStore from "@/hooks/useStore";
 import Feather from "@expo/vector-icons/Feather";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
-const CustomTabBar = ({ state, descriptors }: any) => {
+const CustomTabBar = ({ state }: any) => {
   const { employee } = useStore();
   const router = useRouter();
 
@@ -46,13 +43,7 @@ const CustomTabBar = ({ state, descriptors }: any) => {
         ),
         route: () => router.push("/employees"),
       },
-      /*  {
-        label: "Admin T-sheet",
-        icon: (color: any) => (
-          <FontAwesome5 name="business-time" size={15} color={color} />
-        ),
-        route: () => router.push("/timesheet-admin"),
-      }, */
+
       {
         label: "Settings",
         icon: (color: any) => (
@@ -62,7 +53,7 @@ const CustomTabBar = ({ state, descriptors }: any) => {
       }
     );
   }
-  //return null;
+
   return (
     <View style={[styles.tabBar, { backgroundColor }]}>
       {tabs.map((tab, index) => {
@@ -92,7 +83,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     paddingVertical: 10,
     elevation: 4,
-    // position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
