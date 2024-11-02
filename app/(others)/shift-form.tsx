@@ -11,23 +11,22 @@ const ShiftFormScreen = () => {
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
-    const dateFormatOptions = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-
     const screenTitle = date
-      ? new Date(date.toString()).toLocaleString("en-US")
+      ? new Date(date.toString()).toLocaleString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
       : "Add Shift";
 
     if (Platform.OS === "ios") {
       navigation.setOptions({
-        title: screenTitle,
+        headerTitle: screenTitle,
+        headerShown: true,
         headerLeft: () => <HeaderBackButton tintColor="#ff3479" />,
       });
     } else {
-      navigation.setOptions({ title: screenTitle });
+      navigation.setOptions({ headerTitle: screenTitle });
     }
   }, [navigation, date]);
 
@@ -45,7 +44,10 @@ const ShiftFormScreen = () => {
           {
             text: "Yes",
             style: "destructive",
-            onPress: () => router.back(),
+            onPress: () => {
+              navigation.removeListener("beforeRemove", preventGoingBack);
+              router.back();
+            },
           },
         ]
       );

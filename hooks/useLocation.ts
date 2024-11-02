@@ -8,12 +8,11 @@ const useLocation = () => {
 
   useEffect(() => {
     async function _fetch() {
-      console.log("fetch");
       setLoading(true);
       let resp = await getLocations();
       setLoading(false);
       if (resp.success) {
-        setLocations({ ...resp.data });
+        setLocations(resp.data);
       }
     }
     if (locations.length == 0) {

@@ -6,9 +6,11 @@ import { AntDesign } from "@expo/vector-icons";
 export default function CustomDropdown({
   data,
   placeholder = "Select item",
+  onChange = (value: any) => {},
 }: {
   data: { label: string; value: string }[];
   placeholder: string;
+  onChange: (value: any) => void;
 }) {
   const [value, setValue] = useState<any>(null);
   const [isFocus, setIsFocus] = useState(false);
@@ -32,6 +34,7 @@ export default function CustomDropdown({
       onChange={(item) => {
         setValue(item.value);
         setIsFocus(false);
+        onChange(item);
       }}
       renderLeftIcon={() => (
         <AntDesign

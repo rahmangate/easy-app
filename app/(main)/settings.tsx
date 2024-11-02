@@ -2,15 +2,16 @@ import React from "react";
 import { Settings } from "@easyteam/ui";
 import useStore from "@/hooks/useStore";
 import Logger from "@/util/Logger";
-import { api, BASE_URL } from "@/api";
+import { api } from "@/api";
+import { BASE_API } from "@/config";
 
 const SettingsScreen = () => {
-  const { token } = useStore();
+  const { token, setIsGlobalTimeTrackingEnabled } = useStore();
 
   const updateGlobalTrackingSetting = async (payload: boolean) => {
     try {
-      await api.put(
-        BASE_URL + "/settings",
+      const resp = await api.put(
+        BASE_API + "/settings",
         {
           isGlobalTrackingEnabled: payload,
         },
@@ -20,6 +21,8 @@ const SettingsScreen = () => {
           },
         }
       );
+
+      setIsGlobalTimeTrackingEnabled(payload);
     } catch (error) {
       Logger.error("Error updating global tracking setting:", error);
     }

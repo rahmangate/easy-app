@@ -1,14 +1,32 @@
 import { BASE_API } from "@/config";
 import axios from "axios";
 
-axios.create({ baseURL: BASE_API });
+export const api = axios.create({ baseURL: BASE_API });
 
-export const api = axios;
+api.interceptors.response.use(
+  (config) => {
+    // Modify request config if needed
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.request.use(
+  (config) => {
+    // Modify request config if needed
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export const authenticate = async (payload: any) => {
   try {
-    let resp = await axios.post("/auth/login", { ...payload });
-    return { success: true, data: resp.data };
+    let resp = await api.post("/auth/login", { ...payload });
+    return { success: true, data: resp?.data };
   } catch (error) {
     return { success: false, message: error?.toString() };
   }
@@ -16,8 +34,8 @@ export const authenticate = async (payload: any) => {
 
 export const signup = async (payload: any) => {
   try {
-    let resp = await axios.post("/auth/signup", { ...payload });
-    return { success: true, data: resp.data };
+    let resp = await api.post("/auth/register", { ...payload });
+    return { success: true, data: resp?.data?.data };
   } catch (error) {
     return { success: false, message: error?.toString() };
   }
@@ -25,11 +43,9 @@ export const signup = async (payload: any) => {
 
 export const getLocations = async () => {
   try {
-    let resp = await axios.get("/locations");
-    console.log(resp);
-    return { success: true, data: resp.data };
+    let resp = await api.get("/locations");
+    return { success: true, data: resp.data.data };
   } catch (error) {
-    console.log(error);
     return { success: false, message: error?.toString() };
   }
 };

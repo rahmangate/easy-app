@@ -1,31 +1,34 @@
-import React, { useLayoutEffect, useMemo, useRef } from "react";
-import { EmployeesTimesheet } from "@easyteam/ui";
+import React, { useCallback, useLayoutEffect, useMemo, useRef } from "react";
+import { EmployeeListRef, EmployeesTimesheet } from "@easyteam/ui";
 import { useRouter, useLocalSearchParams, useFocusEffect } from "expo-router";
 
 const EmployeesScreen = () => {
-  const ref = useRef<any>(null);
+  const ref = useRef<EmployeeListRef>(null);
   const router = useRouter();
   const { startDate: paramStartDate, endDate: paramEndDate } =
     useLocalSearchParams();
 
-  const startDate = useMemo(() => paramStartDate, [paramStartDate]);
-  const endDate = useMemo(() => paramEndDate, [paramEndDate]);
+  const startDate = useMemo(() => paramStartDate as string, [paramStartDate]);
+  const endDate = useMemo(() => paramEndDate as string, [paramEndDate]);
 
-  useFocusEffect(() => {
-    ref?.current?.reloadData();
-  });
+  useFocusEffect(
+    useCallback(() => {
+      ref?.current?.reloadData();
+      return () => {};
+    }, [])
+  );
 
   return (
     <EmployeesTimesheet
       ref={ref}
       onEmployeeReportPress={({ employeeId, startDate, endDate }) => {
         router.push({
-          pathname: "/(main)/timesheet-admin",
+          pathname: "/(others)/timesheet-admin",
           params: { employeeId, startDate, endDate },
         });
       }}
-      startDate={`${startDate}`}
-      endDate={`${endDate}`}
+      startDate={startDate}
+      endDate={endDate}
     />
   );
 };

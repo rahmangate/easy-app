@@ -16,15 +16,13 @@ import {
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+
   const { loading, handleLogin } = useAuth();
 
   const disabled = loading || !isValidEmail(email) || password.length == 0;
 
-  const onLoginPress = useCallback(() => {
-    console.log(email, password);
-    // handleLogin({ email, password });
-  }, []);
+  const onLoginPress = () => handleLogin({ email, password });
+
   return (
     <ScrollView style={styles.container}>
       <Text>Email</Text>
@@ -47,15 +45,13 @@ export default function Login() {
         autoCapitalize="none"
       />
 
-      {error ? <ThemedText style={styles.errorText}>{error}</ThemedText> : null}
-
       <TouchableOpacity
         style={styles.button}
         disabled={disabled}
         onPress={onLoginPress}
       >
         {loading ? (
-          <ActivityIndicator size={"large"} />
+          <ActivityIndicator size={"small"} color={"white"} />
         ) : (
           <ThemedText style={styles.buttonText}>Login</ThemedText>
         )}

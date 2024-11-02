@@ -1,12 +1,10 @@
 import React, { useRef, useState } from "react";
-import { Timesheet } from "@easyteam/ui";
-import { useRouter } from "expo-router";
+import { Timesheet, TimesheetRef } from "@easyteam/ui";
 
 const TimesheetScreen = () => {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const ref = useRef(null);
-  const router = useRouter();
+  const [startDate, setStartDate] = useState<string | undefined>();
+  const [endDate, setEndDate] = useState<string | undefined>();
+  const ref = useRef<TimesheetRef>(null);
 
   return (
     <Timesheet

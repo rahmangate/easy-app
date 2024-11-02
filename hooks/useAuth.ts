@@ -5,6 +5,7 @@ import useStore from "./useStore";
 import Logger from "@/util/Logger";
 import { isValidEmail } from "@/util";
 import { router } from "expo-router";
+import { PARTNER_ID } from "@/config";
 
 export const useAuth = () => {
   const {
@@ -30,14 +31,16 @@ export const useAuth = () => {
 
     const response = await authenticate({ email, password });
     setLoading(false);
-    if (response.success) {
+
+    if (response.success && response?.data) {
       const { token, employee, employees, isGlobalTrackingEnabled } =
-        response.data;
+        response?.data;
+
       setEmployee(employee);
       setEmployees(employees);
       setIsGlobalTimeTrackingEnabled(isGlobalTrackingEnabled);
       setToken(token);
-      router.replace("/(main)");
+      router.replace("/(main)/time-clock");
     } else {
       Alert.alert(
         "Login Failed",
@@ -82,7 +85,7 @@ export const useAuth = () => {
       password,
       username,
       organizationId: locationId,
-      partnerId: "d40e2f92-2523-4833-a9cc-a95cef576876",
+      partnerId: PARTNER_ID,
       payrollId: "Payroll123",
       employerPayrollId: "EmployerPayroll123",
       accessRole: {
@@ -98,26 +101,24 @@ export const useAuth = () => {
     };
 
     setLoading(true);
-    try {
-      const response = await signup(payload);
 
-      if (response.success) {
-        Alert.alert(
-          "Sign Up Successful",
-          `Your account has been created as a ${role}.`,
-          [{ text: "OK", onPress: () => router.navigate("/(auth)/login") }]
-        );
-      }
-    } catch (error) {
-      Logger.error("Sign Up Error:", error);
+    const response = await signup({ ...payload });
+    setLoading(false);
+
+    if (response.success) {
       Alert.alert(
-        "Sign Up Failed",
-        "There was an error creating your account. Please try again.",
-        [{ text: "OK" }]
+        "Sign Up Successful",
+        `Your account has been created as a ${role}.`,
+        [{ text: "OK", onPress: () => router.navigate("/(auth)/login") }]
       );
-    } finally {
-      setLoading(false);
+      return;
     }
+    Logger.error("Sign Up Error:", response.message);
+    Alert.alert(
+      "Sign Up Failed",
+      "There was an error creating your account. Please try again.",
+      [{ text: "OK" }]
+    );
   };
 
   return {

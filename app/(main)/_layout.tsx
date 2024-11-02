@@ -1,101 +1,76 @@
-import { Tabs } from "expo-router";
+import { router, Tabs } from "expo-router";
 import React from "react";
 
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+
+import CustomTabBar from "@/components/navigation/CustomTabBar";
+import { Alert, TouchableOpacity, Text, View } from "react-native";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import useStore from "@/hooks/useStore";
-import { RoleName } from "@/model";
+import EasyteamProvider from "@/components/provider/EasyteamLayout";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const { token, employee, employees, isGlobalTimeTrackingEnabled } =
-    useStore();
+  const { reset } = useStore();
+  const color = useThemeColor({}, "activeBottomTabIcon");
+  const logout = () => {
+    Alert.alert("Logout", "Do you want to logout?", [
+      {
+        text: "Yes",
+        onPress: () => {
+          router.replace("/(auth)/login");
+          reset();
+        },
+      },
+      { text: "No" },
+    ]);
+  };
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        headerShown: false,
-      }}
-    >
-      <Tabs.Screen
-        name="time-clock"
-        options={{
-          title: "Home",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "home" : "home-outline"}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="timesheet"
-        options={{
-          title: "Timesheet",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "code-slash" : "code-slash-outline"}
-              color={color}
-            />
-          ),
-        }}
-      />
+    <EasyteamProvider>
+      <Tabs
+        initialRouteName="time-clock"
+        screenOptions={{
+          tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
 
-      {employee?.role?.name == RoleName.admin && (
-        <>
-          <Tabs.Screen
-            name="employees"
-            options={{
-              title: "Employees",
-              tabBarIcon: ({ color, focused }) => (
-                <TabBarIcon
-                  name={focused ? "code-slash" : "code-slash-outline"}
-                  color={color}
-                />
-              ),
-            }}
-          />
-          <Tabs.Screen
-            name="shift-form"
-            options={{
-              title: "Shift",
-              tabBarIcon: ({ color, focused }) => (
-                <TabBarIcon
-                  name={focused ? "code-slash" : "code-slash-outline"}
-                  color={color}
-                />
-              ),
-            }}
-          />
-          <Tabs.Screen
-            name="timesheet-admin"
-            options={{
-              title: "Admin Timesheet",
-              tabBarIcon: ({ color, focused }) => (
-                <TabBarIcon
-                  name={focused ? "code-slash" : "code-slash-outline"}
-                  color={color}
-                />
-              ),
-            }}
-          />
-          <Tabs.Screen
-            name="settings"
-            options={{
-              title: "Settings",
-              tabBarIcon: ({ color, focused }) => (
-                <TabBarIcon
-                  name={focused ? "code-slash" : "code-slash-outline"}
-                  color={color}
-                />
-              ),
-            }}
-          />
-        </>
-      )}
-    </Tabs>
+          headerRight: () => (
+            <TouchableOpacity style={{ padding: 10 }} onPress={logout}>
+              <Text style={{ color }}>Logout</Text>
+            </TouchableOpacity>
+          ),
+        }}
+        tabBar={(props) => <CustomTabBar {...props} />}
+      >
+        <Tabs.Screen
+          name="time-clock"
+          options={{
+            title: "Home",
+          }}
+        />
+        <Tabs.Screen
+          name="timesheet"
+          options={{
+            title: "Timesheet",
+          }}
+        />
+
+        <Tabs.Screen
+          name="employees"
+          options={{
+            title: "Employees",
+          }}
+        />
+
+        <Tabs.Screen
+          name="settings"
+          options={{
+            title: "Settings",
+          }}
+        />
+      </Tabs>
+    </EasyteamProvider>
   );
 }

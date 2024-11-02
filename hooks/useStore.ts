@@ -16,21 +16,31 @@ interface StateAction {
   setIsGlobalTimeTrackingEnabled: (
     isGlobalTimeTrackingEnabled: boolean
   ) => void;
+  reset: () => void;
 }
+
+const initial = {
+  token: "",
+  employee: null,
+  employees: [],
+  locations: [],
+  isGlobalTimeTrackingEnabled: true,
+};
 const useStore = create(
   persist<StateAction>(
     (set, get) => ({
-      token: "",
+      ...initial,
       setToken: (token: any) => set({ token }),
-      employee: null,
+
       setEmployee: (employee: any) => set({ employee }),
-      employees: [],
+
       setEmployees: (employees: FormattedEmployee[]) => set({ employees }),
-      locations: [],
+
       setLocations: (locations: Location[]) => set({ locations }),
-      isGlobalTimeTrackingEnabled: true,
+
       setIsGlobalTimeTrackingEnabled: (isGlobalTimeTrackingEnabled: boolean) =>
         set({ isGlobalTimeTrackingEnabled }),
+      reset: () => set({ ...initial }),
     }),
     {
       name: "easy-team-1",

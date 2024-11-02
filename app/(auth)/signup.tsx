@@ -1,6 +1,6 @@
 import CustomDropdown from "@/components/Dropdown";
 import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+
 import { useAuth } from "@/hooks/useAuth";
 import useLocation from "@/hooks/useLocation";
 import { RoleName } from "@/model";
@@ -8,15 +8,13 @@ import { router } from "expo-router";
 
 import React, { useCallback, useMemo, useState } from "react";
 import {
-  View,
   TextInput,
-  Button,
   Text,
   StyleSheet,
-  Alert,
   TouchableOpacity,
   ScrollView,
   Switch,
+  ActivityIndicator,
 } from "react-native";
 
 const SignupScreen = () => {
@@ -24,29 +22,27 @@ const SignupScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [locationId, setLocationId] = useState("");
+  const [locationId, setLocationId] = useState("67231e77d418f3d3f2971ab8");
   const [role, setRole] = useState<RoleName>(RoleName.regular);
 
   const { loading, handleSignup } = useAuth();
-  const { locations, loadingLocation } = useLocation();
+  const { locations } = useLocation();
 
   const locationOptions = useMemo(() => {
     return locations?.map((item) => ({
       label: item.name,
-      value: `${item.id}`,
+      value: `${item._id}`,
     }));
   }, [locations]);
 
   const onSignupPress = () => {
-    console.log(email, role);
-
     handleSignup({
       email,
       confirmPassword,
       password,
       username,
       locationId,
-      role: { name: role },
+      role: role?.toString(),
     });
   };
 
@@ -93,8 +89,8 @@ const SignupScreen = () => {
       <CustomDropdown
         data={locationOptions}
         placeholder="Select location"
-        onChange={(select) => {
-          setLocationId(select.id);
+        onChange={(selected) => {
+          setLocationId(selected?.value);
         }}
       />
 
@@ -116,8 +112,16 @@ const SignupScreen = () => {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={onSignupPress}>
-        <Text style={styles.buttonText}>Sign Up</Text>
+      <TouchableOpacity
+        disabled={loading}
+        style={styles.button}
+        onPress={onSignupPress}
+      >
+        {loading ? (
+          <ActivityIndicator size={"small"} color={"white"} />
+        ) : (
+          <Text style={styles.buttonText}>Sign Up</Text>
+        )}
       </TouchableOpacity>
       <TouchableOpacity
         style={{ padding: 10, margin: 10 }}
@@ -131,8 +135,6 @@ const SignupScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    /// flex: 1,
-    // justifyContent: "center",
     paddingVertical: 30,
     paddingHorizontal: 20,
     backgroundColor: "#f2f2f2",
